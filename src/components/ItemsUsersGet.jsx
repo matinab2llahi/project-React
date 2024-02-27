@@ -10,7 +10,7 @@ function ItemsUsersGet({username, eamil, password}) {
                 <b>eamil : </b><pre> {eamil?eamil:"not value"}</pre>
             </div>
             <div className='items___text'>
-                <b>password : </b><pre> {password?eamil:"not value"}</pre>
+                <b>password : </b><pre> {password?password:"not value"}</pre>
             </div>
         </div>  
     )

@@ -71,9 +71,6 @@
 .box_users ul>li :hover p{
     opacity: 1;
 }
-
-
-
 .box_users .items__users{
     width: 90% !important;
     display: flex !important;

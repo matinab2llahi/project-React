@@ -2,8 +2,10 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    
 }
 .items__users_control button{
+    width: 150px;
     padding: 10px 20px;
     margin: 0;
     border: none;

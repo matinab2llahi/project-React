@@ -4,10 +4,10 @@ import Login from './components/Login'
 // import Basic from './components/FormikTest'
 function App() {
     const BASE_URL = "https://users-login-2-default-rtdb.firebaseio.com/"
-    // location href login file               
+
     const URL_LOGIN = location.href
-    // location href management login file     
-    const URL_MANAGEMENT_LOGIN = `${location.href}porfile.html`
+
+    const URL_MANAGEMENT_LOGIN = `${location.href}profile.html`
     return (
         <section>
             <div className='conteier'>

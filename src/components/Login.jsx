@@ -59,6 +59,7 @@ function Login({BASE_URL, URL_LOGIN, URL_MANAGEMENT_LOGIN}) {
                     // set user data
                     if(req.data !== null){
                         setUserNow(req.data)
+                        // location.href=URL_MANAGEMENT_LOGIN;
                     }else{
                         localStorage.removeItem("idUser")
                         alert("You don't have your token")
@@ -139,7 +140,6 @@ function Login({BASE_URL, URL_LOGIN, URL_MANAGEMENT_LOGIN}) {
                         <input type="email"        ref={eamilInput} title="eamil" placeholder='email' required  />
                         <input type="password"      ref={passInput} title="password" placeholder='password' required minLength={5} onChange={(e)=>changeInput(e,"password")}/>
                     </div>
-                    <a href='../../profile.html'>next click</a>
                     <div>
                         <button type='submit' ref={btnSubmit}>login</button>
                         <a href='/' ref={changeSituationRef} onClick={changeSituation}>sing in</a>
