@@ -1,10 +1,9 @@
 import {useRef, useState, useEffect} from 'react'
 import "./style/Login.css"
 import axios from "axios"
-function Login({BASE_URL}) {
-    const [Users, setUsers] = useState(JSON.parse(localStorage.getItem("idUser"))) || []
-    // const [usersNew, setUsersNew]=useState({})
+function Login({BASE_URL, URL_LOGIN, URL_MANAGEMENT_LOGIN}) {
     const [Situation, setSituation] = useState(true)
+    const [UserNow, setUserNow] = useState({})
     
     
 
@@ -27,6 +26,11 @@ function Login({BASE_URL}) {
         changeSituationRef.current.innerHTML= val2
         btnSubmit.current.innerHTML= val
         userInput.current.hidden =hidden
+        if(hidden){
+            userInput.current.setAttribute('disabled', '')
+        }else{
+            userInput.current.removeAttribute('disabled')
+        }
     }
     const changeInput=(e,val)=>{
         
@@ -41,20 +45,31 @@ function Login({BASE_URL}) {
         e.preventDefault()
         setSituation(!Situation)
     }
-    useEffect(() => {
-        // localStorage.setItem("idUser", JSON.stringify([]))
-        const tokes = JSON.parse(localStorage.getItem("idUser"))
-        // if(tokes !== null){
-        const test = 0
-        axios.get(`${BASE_URL}/users/${test}.json`)
-        .then(req=>console.log(req.data))
-        .catch(err=>console.log(err))
-        tokes.forEach(el=>{
-            console.log(el)
-        })
-        // }
+    const claerDataUser =()=>{
+        setUserNow({})
 
-        // localStorage.setItem("id",)
+        location.href = URL_LOGIN
+        localStorage.removeItem("idUser")
+    }
+    useEffect(() => {
+        const toketUser =JSON.parse(localStorage.getItem("idUser"))
+        axios.get(`${BASE_URL}/users/${toketUser}.json`)
+        .then(req=>{
+                if(req.status === 200){
+                    // set user data
+                    if(req.data !== null){
+                        setUserNow(req.data)
+                    }else{
+                        localStorage.removeItem("idUser")
+                        alert("You don't have your token")
+                    }
+                }else{
+                    claerDataUser()
+                }
+            })
+            .catch(err=>{
+                claerDataUser()
+            })
         document.title = `account ${Situation?"login":"sing in"}`
         if(Situation === false){
             setTimeout(()=>{
@@ -74,41 +89,43 @@ function Login({BASE_URL}) {
         e.preventDefault()
         if(Situation === true){
             //login
-            // const chackEamil = !Users.some(el=>{return el.eamil === eamilInput.current.value})
-            // if(chackEamil){
-            if(true){
-                // post data base
-                
-                const res=await axios.post("https://users-login-2-default-rtdb.firebaseio.com/users.json",
-                {
-                    username:userInput.current.value.trim(),
-                    password:passInput.current.value.trim(),
-                    eamil: eamilInput.current.value.trim()
-                }  )
-                    // setUsers(prev=>[...prev,response.data.name])
-                    
-                    if (Users.length === 0 ){
-                        setUsers([response.data.name])
-                    }else{
-                        setUsers(prev=>[...prev,response.data.name])
-                    }
-                    localStorage.setItem("idUser",JSON.stringify(Users))
-                    // console.log(Users,localStorage.getItem("idUser"))
-                    
-                    console.log("token ==>>  " + Users);
-                    console.log(response.data)
-                
-
-                //_
-                userInput.current.value=""
-            }else{
-                alert("Your email is duplicate. Enter another email.")
-            }
+            // post data base
+            axios.post(`${BASE_URL}/users.json`,
+            {
+                username:userInput.current.value.trim(),
+                password:passInput.current.value.trim(),
+                eamil: eamilInput.current.value.trim()
+            }  ).then(req=>{
+                localStorage.setItem("idUser",JSON.stringify(req.data.name))
+                location.href = URL_MANAGEMENT_LOGIN
+            }).catch(err=>{
+                claerDataUser()
+            })
+            userInput.current.value=""
             clearInputVal()
         }else{
             //sing in
-            //...
-
+            if(UserNow !== null){
+                // if token okey
+                if(
+                    UserNow.eamil === eamilInput.current.value.trim()
+                    &&
+                    UserNow.password === passInput.current.value.trim()
+                ){
+                    clearInputVal()
+                    location.href = URL_MANAGEMENT_LOGIN
+                }else if(UserNow.password !== passInput.current.value){
+                    passInput.current.value=""
+                    alert("Your password is not correct")
+                }else{
+                    clearInputVal()
+                    alert("Your eamil is not correct")
+                }
+            }else{
+                // if token claer
+                alert("You don't have your token.")
+                clearInputVal()
+            }
         }
     }
     return (
@@ -122,6 +139,7 @@ function Login({BASE_URL}) {
                         <input type="email"        ref={eamilInput} title="eamil" placeholder='email' required  />
                         <input type="password"      ref={passInput} title="password" placeholder='password' required minLength={5} onChange={(e)=>changeInput(e,"password")}/>
                     </div>
+                    <a href='../../profile.html'>next click</a>
                     <div>
                         <button type='submit' ref={btnSubmit}>login</button>
                         <a href='/' ref={changeSituationRef} onClick={changeSituation}>sing in</a>

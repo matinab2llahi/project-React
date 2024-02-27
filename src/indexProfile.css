@@ -1,0 +1,17 @@
+:root {
+  /* color: rgba(255, 255, 255, 0.87); */
+  /* background-color: #242424; */
+
+  /* text-rendering: optimizeLegibility; */
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+

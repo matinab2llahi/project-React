@@ -1,0 +1,14 @@
+.items__users_control{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.items__users_control button{
+    padding: 10px 20px;
+    margin: 0;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    outline: none;
+    border-radius: 5px;
+}

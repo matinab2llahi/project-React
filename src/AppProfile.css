@@ -1,0 +1,7 @@
+.sec_users{
+    height: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
